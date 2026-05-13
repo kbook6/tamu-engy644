@@ -1,0 +1,9 @@
+﻿Scenario,Probability,Description,Load pattern note
+Hot_Clear,0.16,Hot July day with strong sun and normal wind.,"High cooling load, late-afternoon peak."
+Hot_Hazy,0.14,"Hot, hazy afternoon; weaker solar and lower wind.",Very high cooling load.
+Hot_Cloudy,0.12,"Hot but mostly cloudy; lower solar, slightly stronger wind.",High cooling load.
+Storm_PM,0.1,Afternoon thunderstorm reduces solar sharply and raises late-day wind.,Slight storm relief after midday.
+Clear_Breezy,0.14,Clear sky with breezy conditions; strong solar and above-average wind.,Slightly below-base load.
+Mild_Balanced,0.14,Milder day with balanced renewable output and reduced load.,Below-base load.
+Overcast_Windy,0.1,Overcast but windy day; weak solar and strong wind.,Below-base load.
+Cloudy_Calm,0.1,"Cloudy, calmer day; moderate solar and low wind.",Near-base load.

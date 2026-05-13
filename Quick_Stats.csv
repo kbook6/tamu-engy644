@@ -1,0 +1,7 @@
+﻿Metric,Value
+Average base load (MW),12.51
+Peak base load (MW),17.2
+Average grid buy price ($/MWh),59.79
+Peak grid buy price ($/MWh),116
+Daily solar energy per 1 MW contracted on clear day (MWh),6.85
+Daily wind energy per 1 MW contracted on Hot_Clear scenario (MWh),8.12
