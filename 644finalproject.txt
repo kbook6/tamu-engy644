@@ -1,0 +1,8 @@
+ampl file directory/
+├── 644run.run             # AMPL script to load everything 
+├── 644data.run            # combined data file
+├── models/
+│   ├── 644stochastic.mod  		# stochastic model file
+│   ├── 644deterministic.mod    # deterministic model for WS
+│   ├── 644metrics.mod		    # metrics for EV
+│   └── 644scens.mod		    # sensitivity analysis

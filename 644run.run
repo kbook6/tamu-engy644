@@ -1,0 +1,177 @@
+### run file for 644 ###
+# cd "C:/Users/katbo/AMPL";
+
+### ------------------------------------ ###
+### stochastic model ###
+reset;
+
+print "Stochastic Model";
+
+model 644stochastic.mod;
+data 644data.dat;
+
+option solver './gurobi';
+solve;
+
+printf "Stochastic objective = %f\n", totalCost;
+display xS, xW;
+print "Stochastic Grid Purchase: ";
+display g;
+print "Stochastic Grid Export = ";
+display e;
+
+### ------------------------------------ ###
+### metrics/EV model ###
+reset;
+print "Expected Value Model";
+
+model 644metrics.mod;
+data 644data.dat;
+ 
+option solver './gurobi';
+solve; 
+
+print "EV objective = ", totalCostEV;
+display xS, xW;
+print "EV Grid Purchase = ";
+display g_EV;
+print "EV Grid Export = ";
+display e_EV;
+
+# first-stage decisions (for EEV and VSS calculations later)
+param xS_EV{HOUR};
+param xW_EV{HOUR};
+# different labels but are the same values as xS and xW for nonanticipativity
+# 		stored under different labels to not overload the code during runs
+param zEV;
+
+let {t in HOUR} xS_EV[t] := xS[t];
+let {t in HOUR} xW_EV[t] := xW[t];
+let zEV := totalCostEV;
+
+# write the info into a new file
+printf "param xS_EV :=\n" > ev_x.dat;
+for {t in HOUR} {
+    printf "%d %f\n", t, xS_EV[t] >> ev_x.dat;
+}
+printf ";\n" >> ev_x.dat;
+
+printf "param xW_EV :=\n" > ev_w.dat;
+for {t in HOUR} {
+    printf "%d %f\n", t, xW_EV[t] >> ev_w.dat;
+}
+printf ";\n" >> ev_w.dat;
+
+printf "param zEV := %f;\n", zEV > ev_z.dat;
+
+
+### ------------------------------------ ###
+### wait-and-see deterministic model ###
+# currently goes throguh EACH scenario to calculate objective
+reset;
+print "Deterministic for Wait-and-see Model";
+
+model 644deterministic.mod;
+data 644data.dat;
+
+option solver './gurobi';
+
+param zWS{SCENARIO};
+param zWS_weighted;
+
+for {s in SCENARIO} {
+    let SCEN := s;
+    solve;
+
+    let zWS[s] := totalCostWS;
+
+    printf "\nScenario %s\n", s;
+    printf "WS objective = %f\n", totalCostWS;
+    display xS, xW;
+    print "WS Grid Purchase = ";
+    display g_WS;
+	print "WS Grid Export = ";
+	display e_WS;
+	let zWS_weighted := probability[s] * zWS[s];
+	print "weighted Wait-and-see value zWS_weighted: ", zWS_weighted;
+	
+}
+
+### ------------------------------------ ###
+### calculations ###
+
+# calculate z^WS
+param zWSsum;
+
+let zWSsum := sum{s in SCENARIO} probability[s] * zWS[s];
+
+printf "\nWeighted Wait-and-See value z_WS = %f\n", zWSsum;
+
+# calculate EVPI
+param zSP;
+let zSP := 12022.5; # from previous stochastic run
+
+print "Expected Value of Perfect Information (EVPI) = ",
+	zSP - zWSsum;
+
+reset;
+
+# calculate VSS
+print "EEV evaluation (EV decisions in stochastic model)";
+
+model 644stochastic.mod;
+data 644data.dat;
+
+# Reload EV first-stage decisions
+param xS_EV{HOUR};
+param xW_EV{HOUR};
+param zEV;
+
+data ev_x.dat;
+data ev_w.dat;
+data ev_z.dat;
+
+# Fix first-stage variables to EV decisions
+let {t in HOUR} xS[t] := xS_EV[t];
+let {t in HOUR} xW[t] := xW_EV[t];
+
+fix {t in HOUR} xS[t];
+fix {t in HOUR} xW[t];
+
+option solver './gurobi';
+solve;
+
+param zEEV; # solution from first-stage decisions with uncertainty
+let zEEV := totalCost;
+param zSP;
+let zSP := 12022.5; # from previous stochastic run
+
+printf "EEV objective (zEEV) = %f\n", zEEV;
+
+print "Value of the Stochastic Solution (VSS) = ",
+	zEEV - zSP;
+
+### ------------------------------------ ###	
+### sensitivity analysis ###
+# 20% increase in grid purchase during peak times
+reset;
+print "Sensitivity Analysis";
+
+model 644sens.mod; # the new mod file for sensitivity
+data 644data.dat;
+option solver './gurobi';
+
+let PEAK_HOURS := {16, 17, 18, 19};
+
+let {t in HOUR} gridBuyPrice_sens[t] := gridBuyPrice[t];
+
+for {t in PEAK_HOURS} {
+    printf "Hour %d original grid price = %f\n", t, gridBuyPrice_sens[t];
+    let gridBuyPrice_sens[t] := 1.2 * gridBuyPrice_sens[t];
+    printf "Hour %d new grid price = %f\n", t, gridBuyPrice_sens[t];
+}
+
+solve totalCost_sens;
+
+printf "Stochastic objective with 20 percent increase in grid price during peak hours = %f\n", totalCost_sens;
+display xS, xW;
