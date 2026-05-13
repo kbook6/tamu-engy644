@@ -17,8 +17,8 @@ ampl file directory/
 │   ├── 644stochastic.mod  		      # stochastic model file    
 │   ├── 644deterministic.mod        # deterministic model for WS     
 │   ├── 644metrics.mod		          # metrics for EV    
-│   └── 644scens.mod		            # sensitivity analysis 
-└── 644_AMPL_results.xslx           # visualization of AMPL results in Microsoft Excel    
+│   └── 644scens.mod		            # sensitivity analysis     
+└── 644_AMPL_results.xlsx           # visualization of AMPL results in Microsoft Excel       
 
 python file directory/  
 └── ssw_engy644finalproject.ipynb    
