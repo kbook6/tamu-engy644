@@ -21,4 +21,5 @@ ampl file directory/
 └── 644_AMPL_results.xlsx           # visualization of AMPL results in Microsoft Excel       
 
 python file directory/  
-└── ssw_engy644finalproject.ipynb    
+├── ssw_engy644finalproject.ipynb   # Google Colab file       
+└──      
