@@ -1,6 +1,6 @@
 # tamu-engy644
 
-ENGY 644 Final Project              # project report file    
+ENGY644_Final-Project-Report.pdf    # project report file     
 
 data file directory/       
 ├── Demand_MWh_By_Scenario.csv              
