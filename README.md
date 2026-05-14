@@ -1,6 +1,6 @@
 # tamu-engy644
 
-ENGY644_Final-Project-Report.pdf    # project report file     
+ENGY644_Final-Project-Report.pdf                 # project report file     
 
 data file directory/       
 ├── Demand_MWh_By_Scenario.csv              
@@ -11,15 +11,15 @@ data file directory/
 └── Wind_CF_By_Scenario.csv    
 
 ampl file directory/     
-├── 644run.run                      # AMPL script to load everything      
-├── 644data.run                     # combined data file     
+├── 644run.run                                   # AMPL script to load everything      
+├── 644data.run                                  # combined data file     
 ├── models/     
-│   ├── 644stochastic.mod  		      # stochastic model file    
-│   ├── 644deterministic.mod        # deterministic model for WS     
-│   ├── 644metrics.mod		          # metrics for EV    
-│   └── 644scens.mod		            # sensitivity analysis     
-└── 644_AMPL_results.xlsx           # visualization of AMPL results in Microsoft Excel       
+│   ├── 644stochastic.mod  		                   #  stochastic model file    
+│   ├── 644deterministic.mod                     # deterministic model for WS     
+│   ├── 644metrics.mod		                       # metrics for EV    
+│   └── 644scens.mod		                         # sensitivity analysis     
+└── 644_AMPL_results.xlsx                        # visualization of AMPL results in Microsoft Excel       
 
 python file directory/  
-├── ssw_engy644finalproject.ipynb   # Google Colab file       
-└──      
+├── ssw_engy644finalproject.ipynb                # Google Colab file       
+└── ssw_engy644finalproject_portable.ipynb       # Python notebook file for Jupyter Notebook     
